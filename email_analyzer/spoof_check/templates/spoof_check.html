@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Spoof Check{% endblock title %}
+
+
+
+{% block main-body %}
+<body class="pb-5"> <!-- Added class for bottom padding -->
+    <div class="container mt-5">
+        <h1 class="text-center">Email Spoof Check</h1>
+        <p id="brief">
+            This online tool checks if a domain has correctly configured the SPF records and the DMARC 
+            records to block email spoofing (impersonation of someone's email address). Just enter the 
+            domain below and press the button.
+        </p>
+        <form method="post" id="domain-form" class="text-center">
+            {% csrf_token %}
+            <div class="form-group" style="max-width:350px; margin:auto;">
+                <input type="text" name="host" class="form-control" id="hostAddr" placeholder="E.g. google.com" required>
+            </div>
+            <div class="form-group mt-2">
+                <button type="submit" class="btn btn-primary btn-block">Check Domain</button>
+            </div>
+        </form>
+        <!-- Spinner Overlay -->
+        <div class="spinner-overlay" id="spinnerOverlay">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        {% if records %}
+            <div class="card-header alert alert-{% if records.spoofable %}danger{% else %}success{% endif %} text-center mt-3" role="alert">
+                Domain emails are {% if records.spoofable %}spoofable{% else %}not spoofable{% endif %}.
+            </div>
+            <div class="card mt-3">
+                <div class="card-body">
+                <ul>
+                <li><strong>Domain: </strong>{{ records.domain }} </li>
+                <li><strong>Has SPF Records: </strong>{{ records.spf }}</li>
+                <li><strong>SPF Records Details: </strong>{{ records.spf_details }}</li>
+                <li><strong>SPF Records ~all Present: </strong>{{ records.spf_all_present }}</li>
+                <li><strong>Has DMARC Records: </strong>{{ records.dmarc }}</li>
+                <li><strong>DMARC Records Details:</strong> {{ records.dmarc_details }}</li>
+                <li><strong>DMARC Enforced: </strong>{{ records.dmarc_enforced }}</li>
+                <li><strong>Spoofable: </strong>{{ records.spoofable }}</li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.getElementById('domain-form').addEventListener('submit', function() {
+            document.getElementById('spinnerOverlay').style.display = 'flex';
+        });
+    </script>
+</body>
+{% endblock main-body %}

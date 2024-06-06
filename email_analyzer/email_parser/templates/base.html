@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>     {% block title %} Email Analyzer  {% endblock title %}</title>
+   
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    {% block css %}
+    <link rel="stylesheet" href= {% static "email_analyzer/css/styles.css" %}>
+    {% endblock css %}
+    
+   
+   
+</head>
+
+<body>
+
+     <!-- Navbar -->
+    {% block navbar %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="{% url "base" %}">Email Analyzer</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}">.eml Parser</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dns_check' %}">DNS Check</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "spoof_check" %}"">Spoof Check</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "contact-us" %}">Service</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock navbar %}
+    <!-- Main Content -->
+    
+{% block main-body %}
+    <div class="container main-content">
+        <h1>Welcome to Email Analyzer</h1>
+        <p class="lead">Analyze your emails for threats and vulnerabilities.</p>
+        <div class="slogan">"Hits by incident, contact us now."</div>
+        <a href="{% url "contact-us" %}" class="btn btn-primary btn-lg contact-btn">Contact Us</a>
+    </div>
+{% endblock main-body %}
+
+   
+<!-- Footer -->
+{% block Footer %}
+    <footer class="footer fixed-bottom bg-light" style="height: 50px; padding: 5px 0">
+        <div class="container height">
+            <p class="text-muted ">Designed and developed by <a href="#" target="_blank">harsh kumar gupta</a>.</p>
+        </div>
+    </footer>
+
+{% endblock Footer %}
+
+
+    <!-- Optional JavaScript -->
+    <!-- Popper.js first, then Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"
+        integrity="sha384-..." crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>

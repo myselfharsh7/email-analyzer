@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Parser Results{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'email_analyzer/css/parser/styles.css' %}">
+<link rel="stylesheet" href="{% static 'email_analyzer/css/styles.css' %}">
+{% endblock css %}
+
+{% block main-body %}
+<body class="pb-5">
+<div class="container">
+    <h1 class="mt-5">Analysis Results</h1>
+    <div class="card mb-3">
+        <div class="card-header">Email Information</div>
+        <div class="card-body">
+            <ul class="list-group">
+                {% for key, value in result.email_info.items %}
+                <li class="list-group-item"><strong>{{ key|capfirst }}:</strong> {{ value }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div id="url-section" class="card mb-3">
+        <div class="card-header">URL Scans Using Virus Total</div>
+        <div class="card-body">
+            <ul class="list-group">
+                {% for scan in result.url_scans %}
+                <li class="list-group-item">
+                    <strong>URL:</strong> {{ scan.url }}<br>
+                    <strong>Reputation:</strong> {{ scan.reputation }}<br>
+                    <strong>Clean:</strong> {{ scan.harmless }}<br>
+                    <strong>Malicious:</strong> {{ scan.malicious }}<br>
+                    <span class="badge bg-info text-dark" id="url-status-{{ forloop.counter0 }}"></span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div id="attachment-section" class="card mb-3">
+        <div class="card-header">Attachment Scans Using Virus Total</div>
+        <div class="card-body">
+            <ul class="list-group">
+                {% for attachment in result.attachment_scans %}
+                <li class="list-group-item">
+                    <strong>Filename:</strong> {{ attachment.filename }}<br>
+                    <strong>MD5:</strong> {{ attachment.scan_result.md5 }}<br>
+                    <strong>Clean:</strong> {{ attachment.scan_result.harmless }}<br>
+                    <strong>Malicious:</strong> {{ attachment.scan_result.malicious }}<br>
+                    <span class="badge bg-info text-dark" id="attachment-status-{{ forloop.counter0 }}"></span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="{% static 'email_analyzer/js/parser/scripts.js' %}"></script>
+</body>
+{% endblock main-body %}

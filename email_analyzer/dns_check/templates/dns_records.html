@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}dns check {% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static "dns_check/css/styles.css" %}">
+{% endblock css %}
+
+{% block main-body %}
+<body class="pb-5"> <!-- Added class for bottom padding -->
+    <div class="container mt-5">
+        <h1 class="text-center">DNS Checker</h1>
+        <p id="brief">
+            This online tool checks various DNS records for a given domain. 
+            <br>Just enter the domain below and press the button. 
+            It provides information about DNS records such as A, AAAA, CNAME, MX, TXT, and more.
+            You can use this tool to diagnose DNS configuration issues, troubleshoot , and ensure your domain's DNS settings are correctly configured.
+        </p>
+        <form method="post" id="domain-form" class="text-center">
+            {% csrf_token %}
+            <div class="form-group" style="max-width:350px; margin:auto;">
+                <input type="text" name="domain" class="form-control" id="domain" placeholder="E.g. google.com" required>
+            </div>
+            <div class="form-group mt-2">
+                <button type="submit" class="btn btn-primary btn-block animate__animated animate__bounce">Check Domain</button>
+            </div>
+        </form>
+        <!-- Spinner Overlay -->
+        <div class="spinner-overlay">
+            <div class="spinner-border text-primary mt-3" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        {% if records %}
+        <div class="alert alert-info text-center mt-3" role="alert">
+            <strong>Domain: </strong>{{ domain }}
+        </div>
+        <div class="card mt-3">
+            <div class="card-header">
+                DNS Records
+            </div>
+            <div class="card-body">
+                <ul>
+                    {% for key, value in records.items %}
+                    <li><strong>{{ key }}:</strong> {% for item in value %} {{ item }} {% endfor %}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <script>
+        document.getElementById('domain-form').addEventListener('submit', function () {
+            // Show spinner overlay when form is submitted
+            document.querySelector('.spinner-overlay').style.display = 'flex';
+        });
+    </script>
+</body>
+{% endblock main-body %}
