@@ -14,6 +14,7 @@ Analyze an Email:
  2.  Click the "Check Domain" button to get the spoof and DNS record status.
 
 Contributions
+
 We welcome contributions to improve this project. Feel free to open issues and submit pull requests on our GitHub repository.
 
 video link: https://youtu.be/lYPdFlfoC-g
